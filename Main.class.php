@@ -96,4 +96,4 @@ $main = new Main;
 // $main->testFreshItem();
 // $main->testPanier();
 // $main->testTicket();
-$main->testInvoice();
+// $main->testInvoice();
