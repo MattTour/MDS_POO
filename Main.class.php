@@ -3,6 +3,7 @@
 require_once('Item.class.php');
 require_once('ShoppingCart.class.php');
 require_once('FreshItem.class.php');
+require_once('Ticket.class.php');
 
 class Main {
 
@@ -59,9 +60,15 @@ public function testFreshItem() {
     self::vardump($freshItem);
 }
 
+public function testTicket() {    
+    $ticket = new Ticket("Concert - 698", 320);
+    var_dump($ticket);
+}
+
 }
 
 $main = new Main;
 // $main->testItem();
 // $main->testFreshItem();
-$main->testPanier();
+// $main->testPanier();
+// $main->testTicket();
