@@ -1,6 +1,8 @@
 <?php
 
 require_once('Item.class.php');
+require_once('FreshItem.class.php');
+require_once('Ticket.class.php');
 
 class ShoppingCart {
 
@@ -15,10 +17,16 @@ class ShoppingCart {
         return $this->id;
     }
 
+    public function getArticles() {
+        return $this->articles;
+    }
+
     public function addItem($newName, $newPrice, $newWeight) {
         $totalWeight = 0;
         foreach ($this->articles as $unArticle) {
-            $totalWeight += $unArticle->getWeight();
+            if(!$unArticle instanceof Ticket){
+                $totalWeight += $unArticle->getWeight();
+            }
         }
         if ($totalWeight+$newWeight > 10000) {
             echo "Votre panier ne peut pas dépasser 10kg, désolé !<br>";
@@ -27,6 +35,27 @@ class ShoppingCart {
             $article = new Item($newName,$newPrice,$newWeight);
             $this->articles[] = $article;
         }
+    }
+
+    public function addFreshItem($newName, $newPrice, $newWeight, $newDate) {
+        $totalWeight = 0;
+        foreach ($this->articles as $unArticle) {
+            if(!$unArticle instanceof Ticket){
+                $totalWeight += $unArticle->getWeight();
+            }
+        }
+        if ($totalWeight+$newWeight > 10000) {
+            echo "Votre panier ne peut pas dépasser 10kg, désolé !<br>";
+        }
+        else {
+            $article = new FreshItem($newName,$newPrice,$newWeight,$newDate);
+            $this->articles[] = $article;
+        }
+    }
+
+    public function addTicket($newName, $newPrice) {
+        $article = new Ticket($newName,$newPrice);
+        $this->articles[] = $article;
     }
 
     public function removeItem($item) {
@@ -56,7 +85,11 @@ class ShoppingCart {
     public function toString() {
         echo "N° Panier: " . $this->getId() . " | Nb produits: " . count($this->articles) . "<br>";
         foreach ($this->articles as $unArticle) {
-            echo "Nom produit: " . $unArticle->getName() . " | Prix: " . $unArticle->getPrice() . " | Poids: " . $unArticle->getWeight() . "<br>";
+            if($unArticle instanceof Ticket){
+                echo "Nom produit: " . $unArticle->getRef() . " | Prix: " . $unArticle->getPrice() . "<br>";
+            }else{
+                echo "Nom produit: " . $unArticle->getName() . " | Prix: " . $unArticle->getPrice() . " | Poids: " . $unArticle->getWeight() . "<br>";
+            }
         }
     }
 

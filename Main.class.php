@@ -4,6 +4,8 @@ require_once('Item.class.php');
 require_once('ShoppingCart.class.php');
 require_once('FreshItem.class.php');
 require_once('Ticket.class.php');
+require_once('Payable.class.php');
+require_once('Invoice.class.php');
 
 class Main {
 
@@ -65,6 +67,28 @@ public function testTicket() {
     var_dump($ticket);
 }
 
+public function testInvoice() {
+    $panier = new ShoppingCart($this->numPanier);
+    $this->numPanier++;
+    $panier->addFreshItem("Fraises", 320, 100, "2022-12-09");
+    $panier->addTicket("Concert - 698", 320);
+    $panier->addTicket("Concert - 988", 220);
+    $panier->addItem("Papier",430,900);
+    var_dump($panier);
+    $panier->itemCount();
+    $panier->totalPrice();
+    $panier->toString();
+    $panier->removeItem(new Ticket("Concert - 988", 220));
+    var_dump($panier);
+    $facture = new Invoice;
+    foreach ($panier->getArticles() as $unArticle) {
+        $facture->add(new Payable($unArticle));
+    }
+    var_dump($facture);
+    $facture->totalAmount();
+    $facture->totalTax();
+}
+
 }
 
 $main = new Main;
@@ -72,3 +96,4 @@ $main = new Main;
 // $main->testFreshItem();
 // $main->testPanier();
 // $main->testTicket();
+$main->testInvoice();
